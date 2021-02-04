@@ -5,11 +5,14 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LineRestAssuredUtils {
 
-    public static ExtractableResponse<Response> 지하철_노선_생성_요청(Map<String, String> params) {
+    public static ExtractableResponse<Response> 지하철_노선_생성_요청(String name, String color, String upStationId, String downStationId, String distance) {
+        Map<String, String> params = getLineParams(name, color, upStationId, downStationId, distance);
+
         return RestAssured
                 .given().log().all()
                 .body(params)
@@ -32,7 +35,9 @@ public class LineRestAssuredUtils {
                 .then().log().all().extract();
     }
 
-    public static ExtractableResponse<Response> 지하철_노선_수정_요청(Map<String, String> params, Long lineId) {
+    public static ExtractableResponse<Response> 지하철_노선_수정_요청(Long lineId, String name, String color) {
+        Map<String, String> params = getLineParams(name, color);
+
         return RestAssured
                 .given().log().all()
                 .body(params)
@@ -46,5 +51,22 @@ public class LineRestAssuredUtils {
                 .given().log().all()
                 .when().delete("/lines/"+lineId)
                 .then().log().all().extract();
+    }
+
+    private static Map<String, String> getLineParams(String name, String color, String upStationId, String downStationId, String distance) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+        params.put("color", color);
+        params.put("upStationId", upStationId);
+        params.put("downStationId", downStationId);
+        params.put("distance", distance);
+        return params;
+    }
+
+    private static Map<String, String> getLineParams(String name, String color) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+        params.put("color", color);
+        return params;
     }
 }
