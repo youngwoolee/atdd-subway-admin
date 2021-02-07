@@ -37,6 +37,17 @@ public class Section {
         this.distance = distance;
     }
 
+    public Section(Section section) {
+        this.upStation = section.getUpStation();
+        this.downStation = section.getDownStation();
+        this.line = section.getLine();
+        this.distance = section.getDistance();
+    }
+
+    public Line getLine() {
+        return line;
+    }
+
     public Long getId() {
         return id;
     }
@@ -69,6 +80,37 @@ public class Section {
         if (upStation.getId() == downStation.getId()) {
             throw new SectionBadRequestException(upStation.getId(), downStation.getId());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Section section = (Section) o;
+
+        if (upStation != null ? !upStation.equals(section.upStation) : section.upStation != null) return false;
+        if (downStation != null ? !downStation.equals(section.downStation) : section.downStation != null) return false;
+        return line != null ? line.equals(section.line) : section.line == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = upStation != null ? upStation.hashCode() : 0;
+        result = 31 * result + (downStation != null ? downStation.hashCode() : 0);
+        result = 31 * result + (line != null ? line.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Section{" +
+                "id=" + id +
+                ", upStation=" + upStation +
+                ", downStation=" + downStation +
+                ", line=" + line +
+                ", distance=" + distance +
+                '}';
     }
 
 

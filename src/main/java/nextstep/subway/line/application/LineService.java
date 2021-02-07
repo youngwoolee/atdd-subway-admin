@@ -74,4 +74,10 @@ public class LineService {
         line.sortSections();
         return LineResponse.of(lineRepository.save(line));
     }
+
+    public void deleteSection(Long lineId, Long stationId) {
+        Line line = getLindById(lineId);
+        Station station = getStationById(stationId);
+        line.deleteSection(station);
+    }
 }
